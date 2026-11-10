@@ -3,9 +3,14 @@ import json
 import random
 import time
 from datetime import datetime, timezone
+from kafka import KafkaProducer
 
 # Shipping containers
 CONTAINERS = ["CONT-001", "CONT-002", "CONT-003"]
+producer = KafkaProducer(
+    bootstrap_servers=["localhost:9092"],
+    value_serializer=lambda data: json.dumps(data).encode("utf-8")
+)
 
 # Generate simulated IoT sensor readings
 def generate_sensor_data(container_id):
@@ -25,6 +30,7 @@ def main():
             for container in CONTAINERS:
                 sensor_data = generate_sensor_data(container)
                 print(json.dumps(sensor_data))
+                producer.send("container-sensors", value=sensor_data)
 
             time.sleep(5)
 
