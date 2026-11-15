@@ -259,9 +259,7 @@ if st.session_state.show_arbitrage:
 
             st.subheader("📊 Extra Cost vs Temperature Reduction")
 
-            chart_df = arbitrage_df[
-                arbitrage_df["ROUTE_ID"] != "ROUTE-A"
-            ].copy()
+            chart_df = arbitrage_df.copy()
 
             st.scatter_chart(
                 chart_df,
