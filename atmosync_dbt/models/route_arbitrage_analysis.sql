@@ -1,0 +1,37 @@
+
+WITH route_data AS (
+    SELECT
+        CONTAINER_ID,
+        ROUTE_ID,
+        EXPECTED_TEMPERATURE_C,
+        TRAVEL_TIME_HOURS,
+        TRANSPORT_COST_INR,
+        RECOMMENDATION_STATUS
+    FROM {{ ref('best_route_recommendation') }}
+),
+
+baseline AS (
+    SELECT *
+    FROM route_data
+    WHERE ROUTE_ID = 'ROUTE-A'
+)
+
+SELECT
+    r.CONTAINER_ID,
+    r.ROUTE_ID,
+    r.RECOMMENDATION_STATUS,
+
+    r.TRANSPORT_COST_INR,
+    r.TRANSPORT_COST_INR - b.TRANSPORT_COST_INR
+        AS EXTRA_COST_INR,
+
+    b.EXPECTED_TEMPERATURE_C -
+        r.EXPECTED_TEMPERATURE_C
+        AS TEMPERATURE_REDUCTION_C,
+
+    r.TRAVEL_TIME_HOURS - b.TRAVEL_TIME_HOURS
+        AS EXTRA_TRAVEL_HOURS
+
+FROM route_data r
+JOIN baseline b
+    ON r.CONTAINER_ID = b.CONTAINER_ID

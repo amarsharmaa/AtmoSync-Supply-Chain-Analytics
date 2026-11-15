@@ -218,3 +218,25 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+consumer/snowflake_rsa_key.pem
+consumer/snowflake_rsa_key_old.pem
+
+# Snowflake private keys
+*.pem
+*.key
+
+# Python environment
+.venv/
+__pycache__/
+*.pyc
+
+# Local secrets
+.env
+.env.*
+profiles.yml
+.streamlit/secrets.toml
+
+# dbt generated files
+target/
+dbt_packages/
+logs/

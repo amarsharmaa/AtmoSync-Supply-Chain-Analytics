@@ -1,0 +1,21 @@
+
+SELECT
+    CONTAINER_ID,
+    SENSOR_TIMESTAMP,
+    TEMPERATURE_C,
+    HUMIDITY_PERCENT,
+    VIBRATION_G,
+
+    CASE
+        WHEN TEMPERATURE_C > 12
+             OR HUMIDITY_PERCENT > 85
+        THEN 'HIGH'
+
+        WHEN TEMPERATURE_C > 8
+             OR HUMIDITY_PERCENT > 70
+        THEN 'MEDIUM'
+
+        ELSE 'LOW'
+    END AS SPOILAGE_RISK
+
+FROM {{ ref('stg_sensor_readings') }}
